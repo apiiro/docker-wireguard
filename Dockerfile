@@ -9,6 +9,8 @@ ARG WIREGUARD_RELEASE
 LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
 LABEL maintainer="thespad"
 
+ENV USE_COREDNS=false
+
 RUN \
   echo "**** install dependencies ****" && \
   apk add --no-cache --virtual=build-dependencies \
@@ -19,7 +21,6 @@ RUN \
     linux-headers && \
   apk add --no-cache \
     bc \
-    coredns \
     gnupg \
     grep \
     iproute2 \
@@ -29,8 +30,7 @@ RUN \
     libcap-utils \
     libqrencode \
     net-tools \
-    openresolv \
-    perl && \
+    openresolv && \
   echo "wireguard" >> /etc/modules && \
   echo "**** install wireguard-tools ****" && \
   if [ -z ${WIREGUARD_RELEASE+x} ]; then \
